@@ -1,36 +1,191 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rise 🌿
 
-## Getting Started
+Rise es una aplicación de bienestar personal que ayuda a convertir cómo te sientes en acciones pequeñas, concretas y realistas.
 
-First, run the development server:
+La experiencia comienza con un breve check-in guiado. A partir de tus respuestas, Rise genera un plan de 7 días con acciones adaptadas a tu momento actual.
+
+## Qué puedes hacer
+
+- Responder un check-in breve
+- Generar un plan personalizado de 7 días
+- Marcar acciones como realizadas
+- Marcar acciones que fueron difíciles
+- Completar o cancelar un plan
+- Revisar planes anteriores
+- Ver el detalle y progreso de cada ciclo
+- Eliminar planes del historial
+- Consultar un resumen general de tu recorrido
+- Iniciar sesión con Google para guardar tu progreso
+
+## Flujo principal
+
+```text
+Check-in
+   ↓
+Generación del plan
+   ↓
+Plan activo de 7 días
+   ↓
+Seguimiento de acciones
+   ↓
+Completar / cancelar
+   ↓
+Historial y progreso
+```
+
+## Stack
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Supabase
+  - Auth
+  - PostgreSQL
+  - Row Level Security
+- Groq
+- Lucide React
+
+## Arquitectura
+
+Rise separa responsabilidades entre estado, lógica y acceso a datos.
+
+```text
+Components
+   ↓
+Hooks
+   ↓
+Providers / API hooks
+   ↓
+Next.js Route Handlers
+   ↓
+Supabase / Groq
+```
+
+### Hooks principales
+
+- `useRise`  
+  Estado global y datos derivados del plan actual.
+
+- `useRiseFlow`  
+  Flujo del check-in, generación y gestión del plan.
+
+- `useRiseApi`  
+  Comunicación con los endpoints de Rise.
+
+- `useHistory`  
+  Estado y lógica del historial.
+
+- `useAuth`  
+  Autenticación con Google.
+
+- `useToast`  
+  Notificaciones globales.
+
+## Seguridad
+
+Las operaciones privadas se realizan mediante Route Handlers de Next.js.
+
+Cada endpoint valida la sesión del usuario antes de acceder a los datos:
+
+```ts
+const {
+  data: { user },
+} = await supabase.auth.getUser();
+```
+
+Las consultas también se restringen por `user_id`, junto con políticas RLS en Supabase.
+
+## Estados del plan
+
+```ts
+"active" | "completed" | "cancelled"
+```
+
+## Estados de las acciones
+
+```ts
+"pending" | "completed" | "rejected"
+```
+
+## Desarrollo
+
+Instala las dependencias:
+
+```bash
+npm install
+```
+
+Inicia el entorno de desarrollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+La aplicación estará disponible en:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Variables de entorno
 
-## Learn More
+Crea un archivo `.env.local` con las variables necesarias para Supabase y Groq.
 
-To learn more about Next.js, take a look at the following resources:
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+GROQ_API_KEY=
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Verificación
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Antes de publicar cambios:
 
-## Deploy on Vercel
+```bash
+npm run lint
+npm run build
+npx knip
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Estado del proyecto
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Rise v1 incluye el flujo completo:
+
+```text
+Check-in
+✓
+
+Generación de plan
+✓
+
+Seguimiento diario
+✓
+
+Completar / cancelar
+✓
+
+Historial
+✓
+
+Detalle de planes
+✓
+
+Eliminación
+✓
+
+Autenticación
+✓
+
+Notificaciones
+✓
+
+Responsive
+✓
+```
+
+## Idea detrás de Rise
+
+Rise no busca que completes todo perfectamente.
+
+Busca ayudarte a identificar qué pequeñas acciones puedes realizar hoy, cuáles fueron más difíciles y qué puedes aprender de cada ciclo para construir el siguiente de una forma más realista.
