@@ -189,3 +189,16 @@ Responsive
 Rise no busca que completes todo perfectamente.
 
 Busca ayudarte a identificar qué pequeñas acciones puedes realizar hoy, cuáles fueron más difíciles y qué puedes aprender de cada ciclo para construir el siguiente de una forma más realista.
+
+## Capturas
+
+<img width="1551" height="892" alt="Captura desde 2026-09-09 08-28-20" src="https://github.com/user-attachments/assets/49cd5d0f-b69c-4c93-a415-65b494eafbca" />
+<img width="1398" height="910" alt="Captura desde 2026-09-09 08-36-50" src="https://github.com/user-attachments/assets/466cd342-388f-4403-8b68-54d86650640c" />
+<img width="1398" height="910" alt="Captura desde 2026-09-09 08-38-04" src="https://github.com/user-attachments/assets/c712832a-482d-476e-bbfb-99d011e49d09" />
+<img width="1398" height="910" alt="Captura desde 2026-09-09 08-38-12" src="https://github.com/user-attachments/assets/533a992c-0e73-47e1-851e-f9d1981f8557" />
+<img width="1398" height="910" alt="Captura desde 2026-09-09 08-38-29" src="https://github.com/user-attachments/assets/c8035409-cc56-4125-a740-1a0b8005780b" />
+<img width="1398" height="910" alt="Captura desde 2026-09-09 08-38-44" src="https://github.com/user-attachments/assets/6f2a3e39-25c9-4ed9-a983-e595a517dfba" />
+
+## Vercel URL
+
+https://rise-inky-rho.vercel.app/login
