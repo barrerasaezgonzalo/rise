@@ -5,15 +5,11 @@
   --foreground: #171717;
 }
 
-@theme {
-  --color-title: #171717;
-  --color-text: #262626;
-  --color-subtitle: #525252;
-  --color-rise: #16a34a;
-  --color-rise-soft: #dcfce7;
-  --color-rise-hover: #15803d;
-  --color-border: #e5e5e5;
-  --color-background: #ffffff;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {

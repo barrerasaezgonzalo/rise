@@ -1,135 +1,87 @@
 "use client";
 
-import { createContext, useEffect, useState } from "react";
-import { useRiseApi } from "../hooks/useRiseApi";
-import { checkInQuestions, totalQuestions } from "../constants";
-import { Answer, RisePlan } from "../types";
-import { useRiseFlow } from "../hooks/useRiseFlow";
-import { RiseLoading } from "../components/RiseLoading";
+import { createContext, useState, useEffect, useCallback } from "react";
+import { Answer, Plan, RiseView } from "../types";
+import { mockQuestions } from "../constants";
 
 type RiseContextType = {
-  question: string;
-  questionIndex: number;
-  totalQuestions: number;
-  answer: string;
+  view: RiseView;
+  setView: React.Dispatch<React.SetStateAction<RiseView>>;
+  activePlan: Plan | null;
+  setActivePlan: React.Dispatch<React.SetStateAction<Plan | null>>;
+  currentStep: number;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   answers: Answer[];
-  isLastQuestion: boolean;
-  loading: boolean;
-  completed: boolean;
-  plan: RisePlan | null;
-  planHistory: RisePlan[];
-  setPlanHistory: React.Dispatch<React.SetStateAction<RisePlan[]>>;
-  error: string;
-  setError: (e: "") => void;
-  setAnswer: (value: string) => void;
-  handleContinue: () => Promise<void>;
-  completePlan: () => Promise<void>;
-  updateTaskStatus: (
-    day: number,
-    status: "pending" | "completed" | "rejected",
-  ) => void;
-  cancelPlan: () => Promise<void>;
-  resetRise: () => void;
-  initialLoading: boolean;
+  setAnswers: React.Dispatch<React.SetStateAction<Answer[]>>;
+  draftPlan: Plan | null;
+  setDraftPlan: React.Dispatch<React.SetStateAction<Plan | null>>;
+  historyPlans: Plan[] | [];
+  setHistoryPlans: React.Dispatch<React.SetStateAction<Plan[] | []>>;
+  selectedQuestions: string[];
+  setSelectedQuestions: React.Dispatch<React.SetStateAction<string[]>>;
+  shuffleQuestions: () => void;
+  loadingInitial: boolean;
 };
 
 export const RiseContext = createContext<RiseContextType | null>(null);
 
 export function RiseProvider({ children }: { children: React.ReactNode }) {
-  const [initialLoading, setInitialLoading] = useState(true);
-  const [question, setQuestion] = useState("");
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [answer, setAnswer] = useState("");
+  const [view, setView] = useState<RiseView>("checkin");
+  const [activePlan, setActivePlan] = useState<Plan | null>(null);
+  const [currentStep, setCurrentStep] = useState(1);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [completed, setCompleted] = useState(false);
-  const [plan, setPlan] = useState<RisePlan | null>(null);
-  const [planHistory, setPlanHistory] = useState<RisePlan[]>([]);
-  const [error, setError] = useState("");
-  const isLastQuestion = questionIndex === totalQuestions - 1;
+  const [draftPlan, setDraftPlan] = useState<Plan | null>(null);
+  const [historyPlans, setHistoryPlans] = useState<Plan[] | []>([]);
+  const [selectedQuestions, setSelectedQuestions] = useState<string[]>(() =>
+    [...mockQuestions].sort(() => 0.5 - Math.random()),
+  );
+  const [loadingInitial, setLoadingInitial] = useState(true);
 
-  const { getActivePlan, getPlanHistory } = useRiseApi();
+  const shuffleQuestions = useCallback(() => {
+    const shuffled = [...mockQuestions].sort(() => 0.5 - Math.random());
+    setSelectedQuestions(shuffled);
+  }, []);
 
   useEffect(() => {
-    const loadRise = async () => {
+    const checkActivePlan = async () => {
       try {
-        const [activePlan, history] = await Promise.all([
-          getActivePlan(),
-          getPlanHistory(),
-        ]);
-
-        setPlanHistory(history ?? []);
-
-        if (activePlan) {
-          setPlan(activePlan);
-          setCompleted(true);
-          return;
+        const res = await fetch("/api/plan/active");
+        if (res.ok) {
+          const data = await res.json();
+          if (data) {
+            setActivePlan(data);
+            setView("active");
+          }
         }
-
-        const randomIndex = Math.floor(Math.random() * checkInQuestions.length);
-
-        setQuestion(checkInQuestions[randomIndex]);
       } catch (error) {
-        console.error(error);
-        setError("No se pudo cargar Rise");
+        console.error("Error verificando plan activo inicial:", error);
       } finally {
-        setInitialLoading(false);
+        setLoadingInitial(false);
       }
     };
 
-    loadRise();
-  }, [getActivePlan, getPlanHistory]);
+    checkActivePlan();
+  }, []);
 
-  const {
-    handleContinue,
-    updateTaskStatus,
-    completePlan,
-    cancelPlan,
-    resetRise,
-  } = useRiseFlow({
-    question,
-    answer,
-    answers,
-    questionIndex,
-    totalQuestions,
-    plan,
-    loading,
-    setQuestion,
-    setQuestionIndex,
-    setAnswer,
-    setAnswers,
-    setLoading,
-    setCompleted,
-    setPlan,
-    setError,
-  });
-
-  if (initialLoading) {
-    return <RiseLoading />;
-  }
   return (
     <RiseContext.Provider
       value={{
-        question,
-        questionIndex,
-        totalQuestions,
-        answer,
+        view,
+        setView,
+        activePlan,
+        setActivePlan,
+        currentStep,
+        setCurrentStep,
         answers,
-        isLastQuestion,
-        loading,
-        completed,
-        plan,
-        planHistory,
-        setPlanHistory,
-        error,
-        setError,
-        setAnswer,
-        handleContinue,
-        completePlan,
-        updateTaskStatus,
-        cancelPlan,
-        resetRise,
-        initialLoading,
+        setAnswers,
+        draftPlan,
+        setDraftPlan,
+        historyPlans,
+        setHistoryPlans,
+        selectedQuestions,
+        setSelectedQuestions,
+        shuffleQuestions,
+        loadingInitial,
       }}
     >
       {children}
