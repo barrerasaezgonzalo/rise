@@ -185,6 +185,13 @@ Busca ayudarte a identificar qué pequeñas acciones puedes realizar hoy, cuále
 
 ## Capturas
 
+<img width="1793" height="874" alt="Captura de pantalla 2026-09-24 024429" src="https://github.com/user-attachments/assets/3b2ee005-d395-4504-a84f-10b242e077b3" />
+<img width="1685" height="863" alt="Captura de pantalla 2026-09-24 024417" src="https://github.com/user-attachments/assets/a6c26e58-c90e-4b37-b2a1-e356258747b7" />
+<img width="1715" height="895" alt="Captura de pantalla 2026-09-24 024402" src="https://github.com/user-attachments/assets/ef59c3fa-1743-4700-ab77-59e8a32feb7d" />
+<img width="1685" height="893" alt="Captura de pantalla 2026-09-24 024344" src="https://github.com/user-attachments/assets/ec646dad-90c1-43da-9ff1-df36ecf73bfc" />
+<img width="1782" height="865" alt="Captura de pantalla 2026-09-24 024251" src="https://github.com/user-attachments/assets/1c6bfb5d-63cc-41de-9d30-49511a2f5192" />
+
+
 ## Vercel URL
 
-https://rise-inky-rho.vercel.app/login
+https://rise-inky-rho.vercel.app
